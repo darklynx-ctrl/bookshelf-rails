@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: darklynx
+  password: 12345
+  host: localhost
+  port: 5432
+
+development:
+  <<: *default
+  database: bookshelf_development
+
+test:
+  <<: *default
+  database: bookshelf_test
+
+production:
+  <<: *default
+  database: bookshelf_production
+  username: darklynx
+  password: <%= ENV["BOOKSHELF_DATABASE_PASSWORD"] %>

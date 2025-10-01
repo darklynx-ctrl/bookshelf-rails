@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
+
+  <div class="card">
+    <div class="card-header">
+      <h2><%= @book.title %></h2>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-3">Автор:</dt>
+        <dd class="col-sm-9"><%= @book.author %></dd>
+
+        <dt class="col-sm-3">Рік видання:</dt>
+        <dd class="col-sm-9"><%= @book.year %></dd>
+
+        <dt class="col-sm-3">Опис:</dt>
+        <dd class="col-sm-9"><%= @book.description.present? ? @book.description : "Опис відсутній" %></dd>
+
+        <dt class="col-sm-3">Додано:</dt>
+        <dd class="col-sm-9"><%= @book.created_at.strftime("%d.%m.%Y о %H:%M") %></dd>
+      </dl>
+    </div>
+    <div class="card-footer">
+      <%= link_to 'Редагувати', edit_book_path(@book), class: 'btn btn-warning' %>
+      <%= button_to 'Видалити', book_path(@book), 
+          method: :delete, 
+          data: { confirm: 'Ви впевнені, що хочете видалити цю книгу?' }, 
+          class: 'btn btn-danger' %>
+      <%= link_to 'Назад до списку', books_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

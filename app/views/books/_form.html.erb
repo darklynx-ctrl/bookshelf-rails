@@ -1,0 +1,39 @@
+<%= form_with(model: book, local: true) do |form| %>
+  <% if book.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Виявлено помилки (<%= book.errors.count %>):</h4>
+      <ul class="mb-0">
+        <% book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, "Назва книги", class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control', placeholder: 'Введіть назву книги' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :author, "Автор", class: 'form-label' %>
+    <%= form.text_field :author, class: 'form-control', placeholder: 'Введіть автора книги' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :year, "Рік видання", class: 'form-label' %>
+    <%= form.number_field :year, class: 'form-control', 
+        min: 1900, max: 2030, placeholder: 'Введіть рік видання' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, "Опис", class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control', 
+        rows: 5, placeholder: 'Введіть опис книги (необов\'язково)' %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= form.submit "Зберегти", class: 'btn btn-success' %>
+    <%= link_to 'Скасувати', books_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>
