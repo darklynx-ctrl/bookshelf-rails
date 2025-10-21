@@ -1,0 +1,27 @@
+<% if @author.persisted? %>
+  // Додати нового автора до випадаючого списку
+  var selectElement = document.getElementById('book_author_id');
+  var newOption = new Option('<%= @author.name %>', '<%= @author.id %>', true, true);
+  selectElement.add(newOption);
+  
+  // Закрити модальне вікно
+  var modal = bootstrap.Modal.getInstance(document.getElementById('newAuthorModal'));
+  modal.hide();
+  
+  // Показати повідомлення про успіх
+  var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+    'Автора "<%= @author.name %>" успішно створено!' +
+    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+    '</div>';
+  document.querySelector('.content .container-fluid').insertAdjacentHTML('afterbegin', alertHtml);
+  
+  // Очистити форму
+  document.getElementById('new-author-form').reset();
+<% else %>
+  // Показати помилки
+  var errorHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+    '<strong>Помилка:</strong> <%= @author.errors.full_messages.join(", ") %>' +
+    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+    '</div>';
+  document.querySelector('.modal-body').insertAdjacentHTML('afterbegin', errorHtml);
+<% end %>

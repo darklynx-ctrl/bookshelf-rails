@@ -1,0 +1,82 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h1 class="m-0"><%= @book.title %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-book"></i> Інформація про книгу
+        </h3>
+      </div>
+      
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">Назва:</dt>
+          <dd class="col-sm-9"><strong><%= @book.title %></strong></dd>
+          
+          <dt class="col-sm-3">Автор:</dt>
+          <dd class="col-sm-9">
+            <% if @book.author %>
+              <%= link_to @book.author.name, author_path(@book.author), class: 'text-primary' %>
+              <% unless @book.author.active %>
+                <span class="badge badge-secondary">Неактивний</span>
+              <% end %>
+            <% else %>
+              <span class="text-muted">Без автора</span>
+            <% end %>
+          </dd>
+          
+          <dt class="col-sm-3">Рік видання:</dt>
+          <dd class="col-sm-9"><%= @book.year %></dd>
+          
+          <dt class="col-sm-3">Опис:</dt>
+          <dd class="col-sm-9">
+            <%= simple_format(@book.description) %>
+          </dd>
+        </dl>
+      </div>
+      
+      <div class="card-footer">
+        <%= link_to edit_book_path(@book), class: 'btn btn-warning' do %>
+          <i class="fas fa-edit"></i> Редагувати
+        <% end %>
+        <%= link_to books_path, class: 'btn btn-default' do %>
+          <i class="fas fa-arrow-left"></i> Назад до списку
+        <% end %>
+        <%= button_to book_path(@book), method: :delete, 
+            data: { confirm: 'Ви впевнені, що хочете видалити цю книгу?' }, 
+            class: 'btn btn-danger float-right' do %>
+          <i class="fas fa-trash"></i> Видалити
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-info-circle"></i> Додаткова інформація
+        </h3>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">
+          <small>
+            <strong>Створено:</strong><br>
+            <%= l(@book.created_at, format: :long) %>
+          </small>
+        </p>
+        <p class="text-muted">
+          <small>
+            <strong>Оновлено:</strong><br>
+            <%= l(@book.updated_at, format: :long) %>
+          </small>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

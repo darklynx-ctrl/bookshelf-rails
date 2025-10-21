@@ -1,0 +1,105 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h1 class="m-0">
+      <%= @author.name %>
+      <% unless @author.active %>
+        <span class="badge badge-secondary">Неактивний</span>
+      <% else %>
+        <span class="badge badge-success">Активний</span>
+      <% end %>
+    </h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-user"></i> Біографія
+        </h3>
+      </div>
+      <div class="card-body">
+        <%= simple_format(@author.bio) %>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-book"></i> Книги автора (<%= @author.books.count %>)
+        </h3>
+      </div>
+      <div class="card-body p-0">
+        <% if @author.books.any? %>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Назва</th>
+                <th>Рік</th>
+                <th>Опис</th>
+                <th style="width: 100px;">Дії</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @author.books.order(:year).each do |book| %>
+                <tr>
+                  <td><strong><%= book.title %></strong></td>
+                  <td><%= book.year %></td>
+                  <td><%= truncate(book.description, length: 100) %></td>
+                  <td>
+                    <%= link_to book_path(book), class: 'btn btn-info btn-sm' do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <div class="p-3 text-center text-muted">
+            <i class="fas fa-book fa-3x mb-3"></i>
+            <p>Для цього автора книг не знайдено.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Дії</h3>
+      </div>
+      <div class="card-body">
+        <%= link_to authors_path, class: 'btn btn-default btn-block' do %>
+          <i class="fas fa-arrow-left"></i> До списку авторів
+        <% end %>
+        <%= link_to books_path, class: 'btn btn-secondary btn-block' do %>
+          <i class="fas fa-book"></i> До книг
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card card-info">
+      <div class="card-header">
+        <h3 class="card-title">Статистика</h3>
+      </div>
+      <div class="card-body">
+        <dl>
+          <dt>Всього книг:</dt>
+          <dd><%= @author.books.count %></dd>
+          
+          <dt>Статус:</dt>
+          <dd>
+            <% if @author.active %>
+              <span class="badge badge-success">Активний</span>
+            <% else %>
+              <span class="badge badge-secondary">Неактивний</span>
+            <% end %>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

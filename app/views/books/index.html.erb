@@ -1,0 +1,109 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h1 class="m-0">Бібліотека книг</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Список книг</h3>
+        <div class="card-tools">
+          <%= link_to new_book_path, class: 'btn btn-primary btn-sm' do %>
+            <i class="fas fa-plus"></i> Додати книгу
+          <% end %>
+          <%= link_to authors_path, class: 'btn btn-secondary btn-sm ml-2' do %>
+            <i class="fas fa-users"></i> Автори
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="card-body">
+        <!-- Форма пошуку та сортування -->
+        <%= form_with url: books_path, method: :get, local: true, class: 'mb-3' do |f| %>
+          <div class="row">
+            <div class="col-md-5">
+              <div class="form-group">
+                <%= f.text_field :search, 
+                    value: params[:search], 
+                    placeholder: 'Пошук за назвою...', 
+                    class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <%= f.select :sort, 
+                    options_for_select([
+                      ['Сортування...', ''],
+                      ['Назва (А-Я)', 'title ASC'],
+                      ['Назва (Я-А)', 'title DESC'],
+                      ['Рік (від старих)', 'year ASC'],
+                      ['Рік (від нових)', 'year DESC']
+                    ], params[:sort]), 
+                    {}, 
+                    class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <%= f.submit 'Шукати', class: 'btn btn-primary' %>
+              <%= link_to 'Скинути', books_path, class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Таблиця книг -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Назва</th>
+                <th>Автор</th>
+                <th>Рік</th>
+                <th style="width: 200px;">Дії</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @books.each do |book| %>
+                <tr>
+                  <td><strong><%= book.title %></strong></td>
+                  <td>
+                    <% if book.author %>
+                      <%= link_to book.author.name, author_path(book.author), class: 'text-primary' %>
+                      <% unless book.author.active %>
+                        <span class="badge badge-secondary">Неактивний</span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted">Без автора</span>
+                    <% end %>
+                  </td>
+                  <td><%= book.year %></td>
+                  <td>
+                    <%= link_to book_path(book), class: 'btn btn-info btn-sm' do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                    <%= link_to edit_book_path(book), class: 'btn btn-warning btn-sm' do %>
+                      <i class="fas fa-edit"></i>
+                    <% end %>
+                    <%= button_to book_path(book), method: :delete, 
+                        data: { confirm: 'Ви впевнені?' }, 
+                        class: 'btn btn-danger btn-sm' do %>
+                      <i class="fas fa-trash"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <div class="float-right">
+          Всього книг: <strong><%= @books.count %></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
