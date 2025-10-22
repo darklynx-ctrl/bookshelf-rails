@@ -20,7 +20,7 @@ class BooksController < ApplicationController
 
   def new
     @book = Book.new
-    @authors = Author.order(:name)  # Всі автори, не тільки активні
+    @authors = Author.order(:name)  
   end
 
   def create
@@ -28,20 +28,20 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to @book, notice: 'Книгу успішно створено.'
     else
-      @authors = Author.order(:name)  # Всі автори
+      @authors = Author.order(:name) 
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @authors = Author.order(:name)  # Всі автори
+    @authors = Author.order(:name)  
   end
 
   def update
     if @book.update(book_params)
       redirect_to @book, notice: 'Книгу успішно оновлено.'
     else
-      @authors = Author.order(:name)  # Всі автори
+      @authors = Author.order(:name) 
       render :edit, status: :unprocessable_entity
     end
   end
