@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #007bff; color: white; padding: 20px; text-align: center; }
+    .content { background: #f8f9fa; padding: 20px; margin: 20px 0; }
+    .stats { display: flex; justify-content: space-around; margin: 20px 0; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 2em; font-weight: bold; color: #007bff; }
+    .success { color: #28a745; }
+    .error { color: #dc3545; }
+    .errors-list { background: #fff; padding: 15px; border-left: 4px solid #dc3545; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📚 Звіт про імпорт книг</h1>
+    </div>
+
+    <div class="content">
+      <h2>Інформація про імпорт</h2>
+      <p><strong>Файл:</strong> <%= @import.filename %></p>
+      <p><strong>Дата:</strong> <%= @import.created_at.strftime('%d.%m.%Y о %H:%M') %></p>
+      <p><strong>Час виконання:</strong> <%= @duration %></p>
+      <p><strong>Статус:</strong> 
+        <span class="<%= @import.status == 'completed' ? 'success' : 'error' %>">
+          <%= @import.status == 'completed' ? '✓ Завершено успішно' : '✗ Помилка' %>
+        </span>
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value"><%= @import.total_rows %></div>
+          <div>Всього рядків</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value success"><%= @import.created_count %></div>
+          <div>Створено книг</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" style="color: #ffc107;"><%= @import.skipped_count %></div>
+          <div>Пропущено</div>
+        </div>
+      </div>
+
+      <% if @import.error_message.present? %>
+        <div class="errors-list">
+          <h3>Помилки та попередження:</h3>
+          <pre><%= @import.error_message %></pre>
+        </div>
+      <% end %>
+    </div>
+
+    <p style="text-align: center; color: #6c757d; font-size: 0.9em;">
+      Це автоматичне повідомлення від системи управління бібліотекою
+    </p>
+  </div>
+</body>
+</html>

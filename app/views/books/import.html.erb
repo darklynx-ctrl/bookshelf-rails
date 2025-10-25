@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Імпорт книг з CSV</h3>
+      </div>
+      
+      <div class="card-body">
+        <%= form_with url: import_csv_books_path, method: :post, local: true, multipart: true do |form| %>
+          
+          <!-- Email для звіту -->
+          <div class="mb-3">
+            <%= form.label :email, 'Email для звіту', class: 'form-label' %>
+            <%= form.email_field :email, class: 'form-control', required: true, 
+                placeholder: 'admin@example.com' %>
+            <div class="form-text">На цю адресу буде надіслано звіт про імпорт</div>
+          </div>
+
+          <!-- Завантаження CSV -->
+          <div class="mb-3">
+            <%= form.label :file, 'CSV файл', class: 'form-label' %>
+            <%= form.file_field :file, class: 'form-control', accept: '.csv', required: true %>
+            <div class="form-text">Файл повинен містити колонки: title, author_name, year, description</div>
+          </div>
+
+          <!-- Приклад CSV -->
+          <div class="alert alert-info">
+            <h5>Приклад CSV файлу:</h5>
+            <pre class="mb-0">title,author_name,year,description
+Кобзар,Тарас Шевченко,1840,Збірка поезій
+Лісова пісня,Леся Українка,1912,Драма-феєрія
+Тіні забутих предків,Михайло Коцюбинський,1911,Повість</pre>
+          </div>
+
+          <%= form.submit 'Імпортувати', class: 'btn btn-primary' %>
+          <%= link_to 'Скасувати', books_path, class: 'btn btn-secondary' %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Історія імпортів -->
+    <div class="card mt-3">
+      <div class="card-header">
+        <h3 class="card-title">Історія імпортів</h3>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Файл</th>
+              <th>Створено</th>
+              <th>Пропущено</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% Import.order(created_at: :desc).limit(10).each do |import| %>
+              <tr>
+                <td><%= import.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+                <td><%= import.filename %></td>
+                <td><span class="badge badge-success"><%= import.created_count %></span></td>
+                <td><span class="badge badge-warning"><%= import.skipped_count %></span></td>
+                <td>
+                  <% case import.status %>
+                  <% when 'completed' %>
+                    <span class="badge badge-success">Завершено</span>
+                  <% when 'failed' %>
+                    <span class="badge badge-danger">Помилка</span>
+                  <% when 'processing' %>
+                    <span class="badge badge-info">Обробка...</span>
+                  <% else %>
+                    <span class="badge badge-secondary">Очікує</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

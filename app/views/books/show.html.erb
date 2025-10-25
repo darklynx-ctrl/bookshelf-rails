@@ -5,6 +5,7 @@
 </div>
 
 <div class="row">
+  <!-- Основна інформація -->
   <div class="col-md-8">
     <div class="card card-primary card-outline">
       <div class="card-header">
@@ -34,9 +35,7 @@
           <dd class="col-sm-9"><%= @book.year %></dd>
           
           <dt class="col-sm-3">Опис:</dt>
-          <dd class="col-sm-9">
-            <%= simple_format(@book.description) %>
-          </dd>
+          <dd class="col-sm-9"><%= simple_format(@book.description) %></dd>
         </dl>
       </div>
       
@@ -47,8 +46,8 @@
         <%= link_to books_path, class: 'btn btn-default' do %>
           <i class="fas fa-arrow-left"></i> Назад до списку
         <% end %>
-        <%= button_to book_path(@book), method: :delete, 
-            data: { confirm: 'Ви впевнені, що хочете видалити цю книгу?' }, 
+        <%= button_to book_path(@book), method: :delete,
+            data: { confirm: 'Ви впевнені, що хочете видалити цю книгу?' },
             class: 'btn btn-danger float-right' do %>
           <i class="fas fa-trash"></i> Видалити
         <% end %>
@@ -56,7 +55,31 @@
     </div>
   </div>
   
+  <!-- Обкладинка + додаткова інформація -->
   <div class="col-md-4">
+    <!-- Обкладинка -->
+    <div class="card card-secondary mb-3">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-image"></i> Обкладинка
+        </h3>
+      </div>
+      <div class="card-body text-center">
+        <% if @book.cover.present? %>
+          <%= image_tag @book.cover_url, 
+              class: "img-fluid rounded shadow-sm mb-2", 
+              alt: @book.title, 
+              style: "max-height: 400px; object-fit: contain;" %>
+        <% else %>
+          <div class="bg-light p-5 rounded">
+            <i class="fas fa-book fa-4x text-muted"></i>
+            <p class="mt-2 text-muted">Немає обкладинки</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Додаткова інформація -->
     <div class="card card-secondary">
       <div class="card-header">
         <h3 class="card-title">
@@ -80,3 +103,4 @@
     </div>
   </div>
 </div>
+

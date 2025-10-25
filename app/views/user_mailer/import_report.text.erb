@@ -1,0 +1,22 @@
+Звіт про імпорт книг
+====================
+
+Файл: <%= @import.filename %>
+Дата: <%= @import.created_at.strftime('%d.%m.%Y о %H:%M') %>
+Час виконання: <%= @duration %>
+Статус: <%= @import.status == 'completed' ? 'Завершено успішно' : 'Помилка' %>
+
+Статистика:
+-----------
+Всього рядків: <%= @import.total_rows %>
+Створено книг: <%= @import.created_count %>
+Пропущено: <%= @import.skipped_count %>
+
+<% if @import.error_message.present? %>
+Помилки та попередження:
+------------------------
+<%= @import.error_message %>
+<% end %>
+
+---
+Це автоматичне повідомлення від системи управління бібліотекою

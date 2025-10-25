@@ -13,8 +13,13 @@
           <%= link_to new_book_path, class: 'btn btn-primary btn-sm' do %>
             <i class="fas fa-plus"></i> Додати книгу
           <% end %>
+
           <%= link_to authors_path, class: 'btn btn-secondary btn-sm ml-2' do %>
             <i class="fas fa-users"></i> Автори
+          <% end %>
+
+          <%= link_to import_books_path, class: 'btn btn-success btn-sm ml-2' do %>
+            <i class="fas fa-file-import"></i> Імпорт з CSV
           <% end %>
         </div>
       </div>
